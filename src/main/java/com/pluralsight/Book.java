@@ -56,5 +56,24 @@ public class Book {
         this.checkOutTo = checkOutTo;
     }
 
+    public void checkOut(String name) {
+        checkOutTo = name;
+        isCheckedOut = true;
+    }
 
+    public void checkIn() {
+        checkOutTo = "";
+        isCheckedOut = false;
+    }
+
+    @Override
+    public String toString() {
+        return "Book{" +
+                "id=" + id +
+                ", isbn='" + isbn + '\'' +
+                ", title='" + title + '\'' +
+                ", isCheckedOut=" + isCheckedOut +
+                ", checkOutTo='" + checkOutTo + '\'' +
+                '}';
+    }
 }
