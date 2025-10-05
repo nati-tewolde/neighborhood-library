@@ -33,11 +33,9 @@ public class Book {
         return isCheckedOut;
     }
 
-
     public String getCheckOutTo() {
         return checkOutTo;
     }
-
 
     public void checkOut(String name) {
         checkOutTo = name;
@@ -56,9 +54,7 @@ public class Book {
                     " | ISBN: " + isbn +
                     " | Title: " + title;
         } else {
-            return "Checked Out Books\n" +
-                    "=================\n" +
-                    "ID: " + id +
+            return "ID: " + id +
                     " | ISBN: " + isbn +
                     " | Title: " + title +
                     " | Borrower: " + checkOutTo;

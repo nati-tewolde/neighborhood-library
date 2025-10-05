@@ -41,42 +41,34 @@ public class NeighborhoodLibrary {
                 case 1:
                     displayAvailableBooks(library);
                     break;
-                case 2:
 
+                case 2:
+                    displayCheckedOutBooks(library);
                     break;
+
                 case 3:
                     System.out.println("\nExiting the library.");
+                    input.close(); // Where to place close scanner for scope
                     return;
 
                 default:
-
-
+                    System.out.println("Invalid home screen option.");
+                    break;
             }
         }
-
     }
 
     public static void displayAvailableBooks(Book[] library) {
-        System.out.println("Available Books\n===============\n");
+        System.out.println("Available Books\n===============");
         for (int i = 0; i < numBooks; i++) {
             Book currentBook = library[i];
             if (!currentBook.isCheckedOut()) {
                 System.out.println(library[i]);
             }
         }
-
         System.out.print("\nEnter book ID to check out a book (0 to return): ");
         int option = input.nextInt();
         input.nextLine();
-
-
-/*
-        String nameOption = "";
-        if (option <= numBooks) {
-            System.out.print("\nEnter your name: ");
-            nameOption = input.nextLine();
-        }
-*/
 
         boolean found = false;
         for (int i = 0; i < numBooks; i++) {
@@ -94,35 +86,54 @@ public class NeighborhoodLibrary {
                 found = true;
                 break;
             }
-
         }
         if (!found && option != 0) {
             System.out.println("\nNot a valid book ID.\n");
         }
     }
 
-/*    public static void displayCheckOut(Book[] library) {
-        System.out.println("Enter the ID of the book to check out (0 to cancel): ");
-        int option = input.nextInt();
-        input.nextLine();
 
-        String nameOption = "";
-        if (option != 0) {
-            System.out.println("Enter your name: ");
-            nameOption = input.nextLine();
-        }
-
-        for (int i = 0; i < 20; i++) {
+    public static void displayCheckedOutBooks(Book[] library) {
+        System.out.println("\nChecked Out Books\n=================");
+        for (int i = 0; i < numBooks; i++) {
             Book currentBook = library[i];
-            if (currentBook.getId() == option) {
-                currentBook.checkOut(nameOption);
+            if (currentBook.isCheckedOut()) {
+                System.out.println(library[i]);
             }
         }
-    }*/
+
+        System.out.print("\nEnter C to check in a book, or X to return: ");
+        String option = input.nextLine();
+
+        if (option.equalsIgnoreCase("X")) {
+            return;
+        } else if (option.equalsIgnoreCase("C")) {
+            System.out.print("\nEnter book ID to check in book: ");
+            int idOption = input.nextInt();
+            boolean found = false;
+            for (int i = 0; i < numBooks; i++) {
+                Book currentBook = library[i];
+                if (currentBook != null && currentBook.getId() == idOption) {
+                    found = true;
+                    if (currentBook.isCheckedOut()) {
+                        currentBook.checkIn();
+                        System.out.println("\nThank you for returning \"" + currentBook.getTitle() + "\"\n");
+                    } else {
+                        System.out.println("\nSorry, that book is currently not checked out.");
+                    }
+                    break;
+                }
+            }
+
+            if (!found) {
+                System.out.println("\nNot a valid book ID.\n");
+            }
+        }
+    }
 
 }
 
 
-// could split into 3 methods - displayBooks(), showAvailableBooks(), checkOutBook()
+// could split displayAvailableBooks method into 3 methods - displayBooks(), showAvailableBooks(), checkOutBook()
 // keep committing to GITHUB
 // close scanner (input)
