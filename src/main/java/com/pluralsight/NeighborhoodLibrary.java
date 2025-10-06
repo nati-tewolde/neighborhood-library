@@ -32,8 +32,14 @@ public class NeighborhoodLibrary {
         library[18] = new Book(19, "978-1-7392-5816-8", "Fluent Python Practices");
         library[19] = new Book(20, "978-1-4829-7365-9", "Learning Java - Understanding the Basics");
 
-        while (true) {
+        boolean isRunning = true;
+        while (isRunning) {
             System.out.print("\nLibrary Home Screen\n===================\n1 - Show Available Books\n2 - Show Checked Out Books\n3 - Exit\nEnter your choice (1 - 3): ");
+            if (!input.hasNextInt()) {
+                System.out.println("\nInvalid selection, please enter a number 1 – 3.");
+                input.nextLine();
+                continue;
+            }
             int option = input.nextInt();
             input.nextLine();
 
@@ -48,23 +54,33 @@ public class NeighborhoodLibrary {
 
                 case 3:
                     System.out.println("\nExiting the library.");
-                    input.close();
-                    return;
+                    isRunning = false;
+                    break;
 
                 default:
-                    System.out.println("\nInvalid home screen option.");
+                    System.out.println("\nInvalid selection, please enter a number 1 – 3.");
                     break;
             }
         }
+        input.close();
     }
 
     public static void displayAvailableBooks(Book[] library) {
         System.out.println("Available Books\n===============");
+
+        boolean isDisplayed = false;
         for (int i = 0; i < numBooks; i++) {
             Book currentBook = library[i];
             if (!currentBook.isCheckedOut()) {
                 System.out.println(library[i]);
+                isDisplayed = true;
             }
+        }
+
+        if (!isDisplayed) {
+            System.out.println("No books currently available for check out.");
+            System.out.println("===============");
+            return;
         }
 
         System.out.println("===============");
@@ -77,7 +93,7 @@ public class NeighborhoodLibrary {
             return;
         }
 
-        boolean found = false;
+        boolean isFound = false;
         for (int i = 0; i < numBooks; i++) {
             Book currentBook = library[i];
             if (currentBook != null && currentBook.getId() == option) {
@@ -87,27 +103,36 @@ public class NeighborhoodLibrary {
                     currentBook.checkOut(nameOption);
                     System.out.println("\nBook \"" + currentBook.getTitle() +
                             "\" is checked out to " + nameOption + ".\n\n==Returning to Home Screen==");
-                    found = true;
+                    isFound = true;
                 } else {
                     System.out.println("\nSorry, that book is already checked out to " + currentBook.getCheckOutTo() + ".\n\n==Returning to Home Screen==");
-                    found = true;
+                    isFound = true;
                     break;
                 }
                 break;
             }
         }
-        if (!found) {
+        if (!isFound) {
             System.out.println("\nNot a valid book ID.\n\n==Returning to Home Screen==");
         }
     }
 
     public static void displayCheckedOutBooks(Book[] library) {
         System.out.println("\nChecked Out Books\n=================");
+
+        boolean isDisplayed = false;
         for (int i = 0; i < numBooks; i++) {
             Book currentBook = library[i];
             if (currentBook.isCheckedOut()) {
                 System.out.println(library[i]);
+                isDisplayed = true;
             }
+        }
+
+        if (!isDisplayed) {
+            System.out.println("No books currently checked out.");
+            System.out.println("=================");
+            return;
         }
 
         System.out.println("=================");
@@ -122,11 +147,11 @@ public class NeighborhoodLibrary {
             int idOption = input.nextInt();
             input.nextLine();
 
-            boolean found = false;
+            boolean isFound = false;
             for (int i = 0; i < numBooks; i++) {
                 Book currentBook = library[i];
                 if (currentBook != null && currentBook.getId() == idOption) {
-                    found = true;
+                    isFound = true;
                     if (currentBook.isCheckedOut()) {
                         currentBook.checkIn();
                         System.out.println("\nThank you for returning \"" + currentBook.getTitle() + "\".\n\n==Returning to Home Screen==");
@@ -137,19 +162,15 @@ public class NeighborhoodLibrary {
                 }
             }
 
-            if (!found) {
+            if (!isFound) {
                 System.out.println("\nNot a valid book ID.\n\n==Returning to Home Screen==");
             }
 
         } else {
-            System.out.println("\nInvalid selection, please enter C or X.\n\n==Returning to Home Screen=="); // Will handle invalid user input (not C or X)
+            System.out.println("\nInvalid selection, please enter C or X.\n\n==Returning to Home Screen==");
         }
     }
 
 }
 
-
-// Notes: default switch condition not printing out when user inputs a non-int value (it throws an exception) - input validation condition in method,
-// (already structured additional exception conditions) adding another if condition to display if no books are currently checked out/in, AND where to place the input.close() statement for scope,
-// could split displayAvailableBooks method into 3 methods - displayBooks(), showAvailableBooks(), checkOutBook().
 
