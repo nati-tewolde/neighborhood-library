@@ -35,9 +35,7 @@ public class NeighborhoodLibrary {
         boolean isRunning = true;
         while (isRunning) {
             System.out.print("\nLibrary Home Screen\n===================\n1 - Show Available Books\n2 - Show Checked Out Books\n3 - Exit\nEnter your choice (1 - 3): ");
-            if (!input.hasNextInt()) {
-                System.out.println("\nInvalid selection, please enter a number 1 – 3.");
-                input.nextLine();
+            if (isNotValidInput("Invalid selection, please enter a number (1 – 3).")) {
                 continue;
             }
             int option = input.nextInt();
@@ -58,7 +56,7 @@ public class NeighborhoodLibrary {
                     break;
 
                 default:
-                    System.out.println("\nInvalid selection, please enter a number 1 – 3.");
+                    System.out.println("\nInvalid selection, please enter a number (1 – 3).\n\n==Returning to Home Screen==");
                     break;
             }
         }
@@ -79,12 +77,15 @@ public class NeighborhoodLibrary {
 
         if (!isDisplayed) {
             System.out.println("No books currently available for check out.");
-            System.out.println("===============");
+            System.out.println("===============\n\n==Returning to Home Screen==");
             return;
         }
 
         System.out.println("===============");
         System.out.print("\nEnter book ID to check out a book (0 to return): ");
+        if (isNotValidInput("Not a valid book ID.")) {
+            return;
+        }
         int option = input.nextInt();
         input.nextLine();
 
@@ -131,7 +132,7 @@ public class NeighborhoodLibrary {
 
         if (!isDisplayed) {
             System.out.println("No books currently checked out.");
-            System.out.println("=================");
+            System.out.println("=================\n\n==Returning to Home Screen==");
             return;
         }
 
@@ -144,6 +145,9 @@ public class NeighborhoodLibrary {
             return;
         } else if (option.equalsIgnoreCase("C")) {
             System.out.print("\nEnter book ID to check in book: ");
+            if (isNotValidInput("Not a valid book ID.")) {
+                return;
+            }
             int idOption = input.nextInt();
             input.nextLine();
 
@@ -171,6 +175,17 @@ public class NeighborhoodLibrary {
         }
     }
 
+    public static boolean isNotValidInput(String errorMessage) {
+        if (!input.hasNextInt()) {
+            System.out.println("\n" + errorMessage + "\n\n==Returning to Home Screen==");
+            input.nextLine();
+            return true;
+        }
+        return false;
+    }
+
 }
 
 
+// duplicate error message in isNotValidInput and default switch case (Potato Sensei - wrong?)
+// no range check in display methods is inefficient
