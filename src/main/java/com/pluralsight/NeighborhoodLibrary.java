@@ -185,7 +185,3 @@ public class NeighborhoodLibrary {
     }
 
 }
-
-
-// duplicate error message in isNotValidInput and default switch case (Potato Sensei - wrong?)
-// no range check in display methods is inefficient
